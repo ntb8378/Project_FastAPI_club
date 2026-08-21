@@ -1,7 +1,7 @@
 from app.db.database import Base
 from sqlalchemy import Column, Integer, VARCHAR, Enum, DateTime, Text, ForeignKey
 from sqlalchemy.orm import relationship
-
+from datetime import datetime, timezone
 
 class ClubsModel(Base):
     __tablename__ = "clubs"
@@ -9,7 +9,7 @@ class ClubsModel(Base):
     name = Column(VARCHAR(255), nullable=False)
     description = Column(Text, nullable=True)
     owner_id = Column(ForeignKey("users.id"), nullable= False)
-    created_at = Column(DateTime, nullable= False)
+    created_at = Column(DateTime, nullable= False,  default=lambda: datetime.now(timezone.utc))
 
     owner = relationship("UsersModel",back_populates="owned_clubs")
 
@@ -23,7 +23,7 @@ class ClubMembersModel(Base):
     club_id = Column(ForeignKey("clubs.id"), primary_key= True)
     user_id = Column(ForeignKey("users.id"), primary_key= True)
     role = Column(Enum("OWNER","MEMBER"), nullable= False)
-    joined_at = Column(DateTime, nullable= False)
+    joined_at = Column(DateTime, nullable= False, default=lambda: datetime.now(timezone.utc))
 
     club = relationship("ClubsModel", back_populates="club_members")
 
