@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 
 # file này dùng để dùng chung cho nhiều schemas User
@@ -7,6 +7,14 @@ class UserBase(BaseModel):
     full_name: str
 
 class UserCreate(UserBase):
+    password: str = Field(
+        min_length=6,
+        max_length=100
+    )
+
+# tạo thêm để dùng cho login
+class UserLogin(BaseModel):
+    email: str
     password: str
 
 class UserUpdate(BaseModel):

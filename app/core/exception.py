@@ -8,3 +8,6 @@ def bad_request(detail="Dữ liệu không hợp lệ"):
 
 def forbidden(detail="Bạn không có quyền truy cập"):
     raise HTTPException(status_code=403, detail=detail)
+
+def unauthorized(detail="Thông tin đăng nhập không hợp lệ"):
+    raise HTTPException(status_code=401,detail=detail)
