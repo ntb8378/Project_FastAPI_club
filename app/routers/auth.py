@@ -13,7 +13,8 @@ router = APIRouter(
 )
 
 
-@router.post("/register",response_model=UserResponse,status_code=status.HTTP_201_CREATED)
+@router.post("/register",response_model=UserResponse,status_code=status.HTTP_201_CREATED)\
+# tìm hiểu tại sao có db: Session = Depends(get_db)
 def register(user: UserCreate,db: Session = Depends(get_db)):
     return auth_service.register_user(db, user)
 

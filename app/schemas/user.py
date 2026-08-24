@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 
 # file này dùng để dùng chung cho nhiều schemas User
+# br cái này
 class UserBase(BaseModel):
     email: str
     full_name: str
@@ -22,10 +23,8 @@ class UserUpdate(BaseModel):
     is_active: bool | None = None
 
 
-class UserResponse(BaseModel):
+class UserResponse(UserBase):
     id: int
-    email: str
-    full_name: str
     role: str
     is_active: bool
     created_at: datetime

@@ -8,7 +8,7 @@
 #     chỉ bằng cách đổi file .env mà không cần sửa code.
 #   - Có kiểm tra kiểu dữ liệu (type validation) tự động nhờ Pydantic.
 # ==============================================================================
-
+# tải pydantic_setting mới dùng được
 from pydantic_settings import BaseSettings
 
 

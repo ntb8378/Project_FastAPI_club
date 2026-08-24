@@ -11,3 +11,6 @@ def forbidden(detail="Bạn không có quyền truy cập"):
 
 def unauthorized(detail="Thông tin đăng nhập không hợp lệ"):
     raise HTTPException(status_code=401,detail=detail)
+
+def conflict(detail="Dữ liệu bị xung đột"):
+    raise HTTPException(status_code=409, detail=detail)
