@@ -37,7 +37,7 @@ def create_club(db: Session,club: ClubCreate,current_user_id: int):
 def get_clubs(db: Session,current_user_id: int,search: str | None = None):
     # club member có chứa club_id và user_id
     # ghim thêm bảng clubmembermodel để so sánh 
-    query = (db.query(ClubsModel).join(ClubMembersModel,ClubsModel.id == ClubMembersModel.club_id).filter(ClubMembersModel.user_id == current_user_id, ClubMembersModel.role.in_(["OWNER", "MEMBER"])))
+    query = (db.query(ClubsModel).join(ClubMembersModel,ClubsModel.id == ClubMembersModel.club_id).filter(ClubMembersModel.user_id == current_user_id))
 
     if search:
         query = query.filter(ClubsModel.name.ilike(f"%{search}%"))
