@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from app.models.activity import ClubActivitiesModel
 from app.models.club import ClubsModel, ClubMembersModel
 from app.models.user import UsersModel
-from app.schemas.activity import ActivityCreate
 from app.core import exception
 from app.schemas.activity import ActivityCreate, ActivityStatus, ActivityPriority, ActivityUpdate
 
