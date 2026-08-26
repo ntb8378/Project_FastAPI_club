@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.club import ClubsModel, ClubMembersModel
 from app.models.user import UsersModel
 from app.schemas.club import ClubCreate, ClubUpdate
+from app.models.activity import ClubActivitiesModel
 from app.core import exception
 
 def create_club(db: Session,club: ClubCreate,current_user_id: int):
@@ -83,6 +84,10 @@ def update_club(db: Session,club_id: int,club_data: ClubUpdate,current_user_id: 
     update_data = club_data.model_dump(exclude_unset=True)
 
     for key, value in update_data.items():
+        # validate khoảng trắng đầu cuối
+        if key == "name" and value is not None:
+            value = value.strip()
+
         setattr(club, key, value)
 
     db.commit()
@@ -91,31 +96,31 @@ def update_club(db: Session,club_id: int,club_data: ClubUpdate,current_user_id: 
     return club
 
 
-def delete_club(db: Session,club_id: int,current_user_id: int):
-    # Kiểm tra club tồn tại
-    club = (db.query(ClubsModel).filter(ClubsModel.id == club_id).first())
+def delete_club(db: Session, club_id: int, current_user_id: int):
+    club = db.query(ClubsModel).filter(ClubsModel.id == club_id).first()
 
     if not club:
-        exception.not_found(
-            "Không tìm thấy câu lạc bộ"
-        )
+        exception.not_found("Không tìm thấy câu lạc bộ")
 
-    # Kiểm tra OWNER
     if club.owner_id != current_user_id:
         exception.forbidden(
             "Chỉ OWNER mới có quyền xóa câu lạc bộ"
         )
 
-    # Lấy tất cả member của club
-    members = (db.query(ClubMembersModel).filter(ClubMembersModel.club_id == club_id).all())
+    # Xóa activity
+    db.query(ClubActivitiesModel).filter(ClubActivitiesModel.club_id == club_id).delete()
 
-    # Xóa từng member
-    for member in members:
-        db.delete(member)
+    # Xóa member
+    db.query(ClubMembersModel).filter(ClubMembersModel.club_id == club_id).delete()
 
     # Xóa club
     db.delete(club)
+
     db.commit()
+
+    return {
+        "message": "Xóa club thành công"
+    }
 
 
 
@@ -195,7 +200,9 @@ def remove_member(db: Session,club_id: int,user_id: int,current_user_id: int):
     # Xóa member
     db.delete(member)
     db.commit()
-
+    return {
+            "message": "Xóa thành viên thành công"
+        }
 
 
 def get_members(db: Session,club_id: int,current_user_id: int):

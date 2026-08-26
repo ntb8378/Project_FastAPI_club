@@ -34,7 +34,7 @@ def update_club(club_id: int,club_data: ClubUpdate,current_user: UsersModel = De
     return club_service.update_club(db,club_id,club_data,current_user.id)
 
 
-@router.delete("/{club_id}", status_code=204)
+@router.delete("/{club_id}", status_code=status.HTTP_200_OK)
 def delete_club(club_id: int,current_user: UsersModel = Depends(get_current_user),db: Session = Depends(get_db)):
     return club_service.delete_club(db,club_id,current_user.id)
 

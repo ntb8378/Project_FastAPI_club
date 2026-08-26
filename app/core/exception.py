@@ -64,3 +64,14 @@ def not_found(
             
         )
     )
+
+def conflict(
+    detail="Tài nguyên đã tồn tại",
+):
+    raise HTTPException(
+        status_code=409,
+        detail=_error_response(
+            409,
+            detail,
+        )
+    )

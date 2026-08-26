@@ -53,6 +53,7 @@ def create_activity(db: Session,club_id: int,activity_data: ActivityCreate,curre
 # chỉ xem được clb mà mình tham gia , tìm hoạt động dựa trên club id đó 
 def get_club_activities(db: Session,club_id: int,current_user_id: int,
 status: ActivityStatus | None = None, priority: ActivityPriority | None = None, assignee_id: int | None = None, title: str | None = None,
+# ofset bỏ qua phần tử đầu , tính từ trang tiếp theo , vd limit = 5 ofset = 5 thì nó sẽ hiện trang 2 gồm phàn tử từ 6 đến 11
 limit: int = 10,offset: int = 0,sort_by: str | None = None):
     club = (db.query(ClubsModel).filter(ClubsModel.id == club_id).first())
 
